@@ -7,6 +7,7 @@
 from saleae.analyzers import HighLevelAnalyzer, AnalyzerFrame, ChoicesSetting, NumberSetting
 from saleae.data import GraphTimeDelta
 import time
+from datetime import datetime
 
 # High level analyzers must subclass the HighLevelAnalyzer class.
 class CanConcatenator(HighLevelAnalyzer):
@@ -97,8 +98,10 @@ class CanConcatenator(HighLevelAnalyzer):
             # Use plain datastring for analyzer frame, colored for terminal
             datastring = datastring_plain
             # If streaming to the terminal, this will be printed with colors
-            print(datastring_colored)
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print(f"[{timestamp}] {datastring_colored}")
             return AnalyzerFrame('canframe', self.currentStart, frame.end_time, {
+                'timestamp': timestamp,
                 'id': self.currentId,
                 'data': self.currentData,
                 'crc': self.currentCrc,
